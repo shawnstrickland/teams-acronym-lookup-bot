@@ -1,0 +1,84 @@
+{
+    "appName": "to-do-list",
+    "solutionSettings": {
+        "name": "fx-solution-azure",
+        "version": "1.0.0",
+        "hostType": "Azure",
+        "azureResources": [
+            "sql",
+            "function"
+        ],
+        "capabilities": [
+            "Tab",
+            "TabSSO"
+        ],
+        "activeResourcePlugins": [
+            "fx-resource-local-debug",
+            "fx-resource-appstudio",
+            "fx-resource-cicd",
+            "fx-resource-api-connector",
+            "fx-resource-aad-app-for-teams",
+            "fx-resource-frontend-hosting",
+            "fx-resource-identity",
+            "fx-resource-azure-sql",
+            "fx-resource-function"
+        ]
+    },
+    "isFromSample": true,
+    "programmingLanguage": "javascript",
+    "defaultFunctionName": "getUserProfile",
+    "version": "2.1.0",
+    "projectId": "ac9907f6-d91d-4e1c-b66d-c054f80ac091",
+    "components": [
+        {
+            "name": "aad-app",
+            "provision": true,
+            "deploy": true
+        },
+        {
+            "hosting": "azure-storage",
+            "name": "teams-tab",
+            "build": true,
+            "provision": true,
+            "folder": "tabs",
+            "sso": true,
+            "deploy": true
+        },
+        {
+            "name": "azure-storage",
+            "connections": [
+                "teams-tab"
+            ],
+            "provision": true
+        },
+        {
+            "name": "identity"
+        },
+        {
+            "name": "azure-sql",
+            "provision": true
+        },
+        {
+            "name": "teams-api",
+            "hosting": "azure-function",
+            "functionNames": [
+                "getUserProfile"
+            ],
+            "build": true,
+            "folder": "api",
+            "deploy": true,
+            "artifactFolder": "api"
+        },
+        {
+            "name": "azure-function",
+            "scenario": "Api",
+            "connections": [
+                "identity",
+                "azure-sql",
+                "aad-app",
+                "teams-tab",
+                "teams-api"
+            ]
+        }
+    ]
+}
